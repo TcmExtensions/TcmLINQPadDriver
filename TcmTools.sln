@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.2035
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TcmTools", "TcmTools\TcmTools.csproj", "{1A6E00D3-6BA8-4FB5-9AC7-AF0AD0C442F9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TcmLINQPadDriver", "LINQPadDriver\TcmLINQPadDriver.csproj", "{1B2D8D9F-E622-4C5C-B79C-E8367F74DC56}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1A6E00D3-6BA8-4FB5-9AC7-AF0AD0C442F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A6E00D3-6BA8-4FB5-9AC7-AF0AD0C442F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A6E00D3-6BA8-4FB5-9AC7-AF0AD0C442F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A6E00D3-6BA8-4FB5-9AC7-AF0AD0C442F9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1B2D8D9F-E622-4C5C-B79C-E8367F74DC56}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1B2D8D9F-E622-4C5C-B79C-E8367F74DC56}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1B2D8D9F-E622-4C5C-B79C-E8367F74DC56}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1B2D8D9F-E622-4C5C-B79C-E8367F74DC56}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F12F108E-03E7-4C0F-A612-1F4679F07967}
+	EndGlobalSection
+EndGlobal

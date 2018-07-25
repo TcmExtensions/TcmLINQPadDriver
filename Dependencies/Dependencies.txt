@@ -1,0 +1,5 @@
+Please place required dependencies in this folder
+- Tridion.ContentManager.CoreService.Client.dll
+  Obtain this from your SDL Tridion installation
+- LINQPad.exe
+  LINQPad client executable

@@ -1,0 +1,133 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{1B2D8D9F-E622-4C5C-B79C-E8367F74DC56}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>TcmLINQPadDriver</RootNamespace>
+    <AssemblyName>TcmLINQPadDriver</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>TcmTools.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="LINQPad">
+      <HintPath>..\Dependencies\LINQPad.exe</HintPath>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Tridion.ContentManager.CoreService.Client, Version=7.1.0.1290, Culture=neutral, PublicKeyToken=ddfc895746e5ee6b, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Dependencies\Tridion.ContentManager.CoreService.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="MFA\BrowserDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MFA\BrowserDialog.Designer.cs">
+      <DependentUpon>BrowserDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ConnectionDialog.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>ConnectionDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MFA\MFAData.cs" />
+    <Compile Include="MFA\CookieManagerMessageInspector.cs" />
+    <Compile Include="MFA\InternetCookies.cs" />
+    <Compile Include="LINQPadCoreServiceClient.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TridionStaticDriver.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="DevDeploy.bat">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="TcmTools.snk" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TcmTools\TcmTools.csproj">
+      <Project>{1A6E00D3-6BA8-4FB5-9AC7-AF0AD0C442F9}</Project>
+      <Name>TcmTools</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="ConnectionDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Connection.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ConnectionFailed.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="header.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="MFA\BrowserDialog.resx">
+      <DependentUpon>BrowserDialog.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>"c:\Program Files\7-Zip\7z.exe" a "$(TargetDir)TcmLINQPadDriver.zip" "$(TargetDir)header.xml" "$(TargetDir)TcmLINQPadDriver.dll" "$(TargetDir)TcmLINQPadDriver.pdb" "$(TargetDir)TcmTools.dll" "$(TargetDir)TcmTools.pdb" "$(TargetDir)Tridion.ContentManager.CoreService.Client.dll"
+del "$(TargetDir)TcmLINQPadDriver.lpx"
+ren "$(TargetDir)TcmLINQPadDriver.zip" TcmLINQPadDriver.lpx
+</PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
