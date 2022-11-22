@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml.Linq;
 using LINQPad;
 using LINQPad.Extensibility.DataContext;
 using Tridion.ContentManager.CoreService.Client;
@@ -20,11 +21,12 @@ namespace TcmLINQPadDriver
 		public override string GetConnectionDescription (IConnectionInfo cxInfo)
 		{
 			// For static drivers, we can use the description of the custom type & its assembly:)
-		    var data = cxInfo.DriverData;
-		    var username = data.Attribute("Username");
+		    XElement data = cxInfo.DriverData;
+            
+		    XAttribute username = data.Attribute("Username");
 		    var result = "";
 
-            if (data.Attribute("Context") != null && !string.IsNullOrEmpty(data.Attribute("Context").Value))
+            if (data.Attribute("Context") != null && !String.IsNullOrEmpty(data.Attribute("Context").Value))
             {
                 result += data.Attribute("Context").Value + " ";
             }
@@ -40,6 +42,7 @@ namespace TcmLINQPadDriver
             return result;
 		}
 
+        [Obsolete]
 		public override bool ShowConnectionDialog (IConnectionInfo cxInfo, bool isNewConnection)
 		{
 			// Prompt the user for a host name, user name and password
@@ -77,9 +80,11 @@ namespace TcmLINQPadDriver
                 new ParameterDescriptor("context", "System.String")
             };
         }
+
         public override object[] GetContextConstructorArguments(IConnectionInfo cxInfo)
         {
-            var data = cxInfo.DriverData;
+            XElement data = cxInfo.DriverData;
+
             return new object[]
                        {
                            data.Attribute("Hostname").Value,
@@ -102,7 +107,7 @@ namespace TcmLINQPadDriver
 		{
 			// Return the objects with which to populate the Schema Explorer by reflecting over customType.
 
-            var itemTypes = new [] {
+            List<ExplorerItem> itemTypes = new [] {
                     //new ExplorerItem("Client", ExplorerItemKind.QueryableObject, ExplorerIcon.ScalarFunction),
 				    new ExplorerItem("Publications", ExplorerItemKind.QueryableObject, ExplorerIcon.Table)
 				    {
@@ -123,13 +128,13 @@ namespace TcmLINQPadDriver
                     GetExplorerItem("PublishTransactions", "PublishTransactions")
                 }.ToList();
 
-		    var context = cxInfo.DriverData.Attribute("Context") != null ? cxInfo.DriverData.Attribute("Context").Value : null;
+		    String context = cxInfo.DriverData.Attribute("Context") != null ? cxInfo.DriverData.Attribute("Context").Value : null;
 
             if (!string.IsNullOrEmpty(context))
             {
                 ItemType type = GetItemType(context);
                 bool isRecursive = type == ItemType.Publication;
-                var suffix = string.Format(isRecursive ? "in {0}" : "under {0} (recursively)", context);
+                String suffix = string.Format(isRecursive ? "in {0}" : "under {0} (recursively)", context);
                 itemTypes.Add(GetExplorerItem("Items", "All items " + suffix));
                 itemTypes.Add(GetExplorerItem("ItemElements", "All items (as XElement) " + suffix));
                 if (type == ItemType.Publication || type == ItemType.Folder) itemTypes.Add(GetExplorerItem("Components", "All Components " + suffix));

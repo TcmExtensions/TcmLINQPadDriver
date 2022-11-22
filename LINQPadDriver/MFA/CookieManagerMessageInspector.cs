@@ -7,7 +7,7 @@ using System.ServiceModel.Channels;
 using System.ServiceModel.Description;
 using System.ServiceModel.Dispatcher;
 
-namespace TcmLINQPadDriver.MFA
+namespace MFA
 {
     public class CookieManagerMessageInspector : IClientMessageInspector, IContractBehavior
     {

@@ -10,5 +10,10 @@ namespace TcmLINQPadDriver.MFA
             InitializeComponent();
             this.webBrowser.Url = url;
         }
+
+        public string Cookies()
+        {
+            return this.webBrowser.Document.Cookie;
+        }
     }
 }

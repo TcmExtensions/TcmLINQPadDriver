@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
 using System.ServiceModel;
 using System.Xml.Linq;
-using LINQPad;
-using TcmLINQPadDriver.MFA;
+using MFA;
 using Tridion.ContentManager.CoreService.Client;
 
 namespace TcmLINQPadDriver
@@ -43,7 +41,7 @@ namespace TcmLINQPadDriver
 
             if (MFA) {
                 if (mfaData == null)
-                    mfaData = new MFAData(new Uri((secure ? "https://" : "http://") + hostname));
+                    mfaData = new MFAData(new Uri("https://" + hostname));
 
                 ChannelFactory.Endpoint.Contract.ContractBehaviors.Add(mfaData.GetContractBehavior());
             }

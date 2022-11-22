@@ -9,6 +9,7 @@ namespace TcmLINQPadDriver
     /// </summary>
     public partial class ConnectionDialog : Window
 	{
+        
 		IConnectionInfo _cxInfo;
 
 		public ConnectionDialog (IConnectionInfo cxInfo)
@@ -34,8 +35,7 @@ namespace TcmLINQPadDriver
                 new XAttribute("Password", string.IsNullOrEmpty(txtPassword.Password) ? "" : txtPassword.Password)
             );
 
-            if (!string.IsNullOrEmpty(txtContext.Text))
-            {
+            if (!string.IsNullOrEmpty(txtContext.Text)) {
                 _cxInfo.DriverData.Add(new XAttribute("Context", txtContext.Text));
             }
 
@@ -49,6 +49,9 @@ namespace TcmLINQPadDriver
 
             txtPassword.Password = "";
             txtPassword.IsEnabled = false;
+
+            chkSecure.IsChecked = true;
+            chkSecure.IsEnabled = false;
         }
 
         private void chkMFA_Unchecked(object sender, RoutedEventArgs e)
@@ -58,6 +61,9 @@ namespace TcmLINQPadDriver
 
             txtPassword.Password = "";
             txtPassword.IsEnabled = true;
+
+            chkSecure.IsChecked = false;
+            chkSecure.IsEnabled = true;
         }
     }
 }

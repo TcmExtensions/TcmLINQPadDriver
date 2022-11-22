@@ -7,7 +7,7 @@ using System.ServiceModel.Description;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TcmLINQPadDriver.MFA
+namespace MFA
 {
     internal sealed class NativeMethods
     {
@@ -41,11 +41,15 @@ namespace TcmLINQPadDriver.MFA
 
     public class MFAData
     {
-        private const String USER_AGENT = "Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; Touch; rv:11.0) like Gecko";
+        //private const String USER_AGENT = "Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko";
+        //private const String USER_AGENT = "Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36";
+        //private const String USER_AGENT =   "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36";
+        //private String userAgent = "Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko";
 
-        Uri url;
-        String cookieData;
-        DateTime expires;
+        private Uri url;
+        private String cookieData;
+        private DateTime expires;
+        private String userAgent;
 
         [SecurityCritical]
         private static void SetUserAgent(String userAgent)
@@ -57,16 +61,28 @@ namespace TcmLINQPadDriver.MFA
         private void ObtainCookies()
         {
             // Prompt user to login through multi-factor authentication
-            SetUserAgent(USER_AGENT);
-            new BrowserDialog(url).ShowDialog();
+            //SetUserAgent(USER_AGENT);
+            //BrowserDialog dialog = new BrowserDialog(url);
+            //dialog.ShowDialog();
 
-            String cookies = WebBrowserCookies.GetCookieInternal(url, false);
+            //String cookies = WebBrowserCookies.GetCookieInternal(url.ToString(), false);
 
-            if (String.IsNullOrEmpty(cookies)) {
-                throw new Exception("Unable to obtain multi-factor authentication cookies from the browser.");
+            //if (String.IsNullOrEmpty(cookies)) {
+            //    throw new Exception("Unable to obtain multi-factor authentication cookies from the browser.");
+            //}
+
+            //string browserCookies = dialog.Cookies();
+
+            Dictionary<String, Chrome.Cookie> cookies = MFA.Chrome.Cookies.Get(url.Host);
+
+            if (cookies.Count == 0) {
+                throw new Exception("Unable to obtain Google Chrome authentication cookies.");
             }
 
-            this.cookieData = cookies;
+            this.cookieData = String.Join("; ", 
+                cookies.Where(c => c.Value.IsSecure)
+                .Select(c => String.Format("{0}={1}", c.Value.Name, c.Value.Value)));
+
             this.expires = DateTime.Now.AddHours(3);
         }
 
@@ -83,11 +99,14 @@ namespace TcmLINQPadDriver.MFA
         public MFAData(Uri url)
         {
             this.url = url;
+
+            // Build Google Chrome user agent string equivalent
+            this.userAgent = MFA.Chrome.UserAgent.GetUserAgent();
         }
 
         public IContractBehavior GetContractBehavior()
         {
-            return new MFA.CookieManagerMessageInspector(USER_AGENT, GetAuthenticationCookies());
+            return new CookieManagerMessageInspector(userAgent, GetAuthenticationCookies());
         }
     }
 }
